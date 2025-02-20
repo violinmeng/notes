@@ -1,0 +1,147 @@
+% UTF-8 encoding
+% Compile with latex+dvipdfmx, pdflatex, xelatex or lualatex
+% XeLaTeX is recommanded
+%!TEX program = xelatex
+% Switch Compiler to XeLaTeX in VSCode:
+% Add the following line to settings.json:
+% `"latex-workshop.latex.recipe.default": "latexmk (xelatex)",`
+% more details:
+% https://stackoverflow.com/questions/56109128/enable-xelatex-in-latex-workshops-for-visual-studio-code
+
+\documentclass[UTF8]{ctexart}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+
+\geometry{
+  a4paper, % 纸张大小
+  left=2.5cm, % 左边距
+  right=2.5cm, % 右边距
+  top=2cm, % 上边距
+  bottom=2cm, % 下边距
+}
+
+\lstset{
+  language=Java,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  breaklines=true,
+  frame=single, % 添加单行边框
+  showstringspaces=false, % 不显示字符串中的空格
+  columns=flexible
+}
+
+\title{函数式编程概念梳理}
+\author{E. W.}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Purity \& Side Effects}
+\subsection{The Pros of Purity}
+\begin{itemize}
+    \item Cachable
+    \item Portable \& Self-documenting
+    \item Testable
+    \item Reasonable
+    \item Parallelizable
+\end{itemize}
+
+\section{Currying}
+
+\begin{equation}
+    f(x,y,z) \implies  f(x)(y)(z)
+\end{equation}
+
+\begin{lstlisting}
+    const add = x => y => x + y;
+    const increment = add(1);
+    const addTen = add(10);
+
+    increment(2); // 3
+    addTen(2); // 12
+\end{lstlisting}
+
+\section{Composing}
+
+\begin{equation}
+    f(x) \quad g(x) \implies f(g(x)) \label{eq:compose}
+\end{equation}
+Reference Equation~\eqref{eq:compose}.
+
+\begin{lstlisting}
+    const compose = (f, g) => x => f(g(x));
+
+    const add1 = x => x + 1;
+    const mult2 = x => x * 2;
+
+    const add1Mult2 = compose(mult2, add1);
+    add1Mult2(5); // 12
+\end{lstlisting}
+
+\textbf{Point-free style}
+\begin{lstlisting}
+    // not pointfree because we mention the data: word
+    const snakeCase = word => word.toLowerCase().replace(/\s+/ig, '_');
+
+    // pointfree
+    const snakeCase = compose(replace(/\s+/ig, '_'), toLowerCase);
+\end{lstlisting}
+
+\subsection{Category Theory}
+Definition of Category: A collection with the following components:
+\begin{itemize}
+    \item A collection of \textit{Objects}
+    \item A collection of \textit{Morphisms}
+    \item A notion of \textit{Composition} on the morphisms
+    \item A distinguished morphism called \textit{Identity}
+\end{itemize}
+
+In the context of programming, the \textit{Objects} are types, the \textit{Morphisms} are functions, \textit{Composition} is function composition, and the \textit{Identity} is the identity function.
+
+\begin{lstlisting}
+    // identity
+    compose(id, f) === compose(f, id) === f;
+    // true
+\end{lstlisting}
+
+In Haskell, the compose operator is represented by a dot:
+\begin{lstlisting}
+    (.) :: (b -> c) -> (a -> b) -> a -> c
+\end{lstlisting}
+
+\section{Hindley-Milner Type System}
+
+The explanation of \textit{Free as in Theorem}:
+Write down the definition of a polymorphic function on a piece of paper. Tell me its type, but be careful not to let me see the function's definition. I will tell you a theorem that the function satisfies.
+
+\section{Functor}
+
+And here is an enumerated list:
+
+\begin{enumerate}
+    \item First step
+    \item Second step
+    \item Third step
+\end{enumerate}
+
+\section{Example Figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{example-image-a} % Replace with your image file
+    \caption{An example figure.}
+    \label{fig:example}
+\end{figure}
+See Figure~\ref{fig:example} for an illustration.
+
+\end{document}
