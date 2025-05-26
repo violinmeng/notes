@@ -133,12 +133,11 @@ I will tell you a theorem that the function satisfies.
 
 \section{Functor}
 
-And here is an enumerated list:
-
+Definition of Functor:
+A type that implements \texttt{map} and obeys some laws. And the laws are:
 \begin{enumerate}
-    \item First step
-    \item Second step
-    \item Third step
+    \item Identity: \texttt{fx.map(x => x) === fx}
+    \item Composition: \texttt{fx.map(f).map(g) === fx.map(x => g(f(x))}
 \end{enumerate}
 
 \section{Example Figure}
